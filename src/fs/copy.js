@@ -13,7 +13,7 @@ const newDir = path.join(rootDir, 'files_copy');
 
 const copy = async () => {
     
-    function createDir() {
+  function createDir() {
 
     fs.mkdir(newDir, {
         recursive: true,
@@ -21,32 +21,27 @@ const copy = async () => {
         if (err) throw err('FS operation failed');
     });
 
-    
+  }; 
 
-    }; 
-
-      try {
+    try {
         const srcDirExists = existsSync(srcDir);
         if (srcDirExists === false) {
             throw error;            
+    }
+    else {
+        const newDirExists = existsSync(newDir);
+        // console.log('Exists: ', newDirExists);
+        if (newDirExists === false) {
+            createDir();
+            console.log('New dir created');
         }
-        else {
-            const newDirExists = existsSync(newDir);
-            // console.log('Exists: ', newDirExists);
-            if (newDirExists === false) {
-                createDir();
-            //   console.log('dir created')
-            }
-            else throw error;
-            }
+        else throw error;
+    }
         
     
-      } catch (e) {
-          console.error('FS operation failed');
-      }
-    
-    
-    
+    } catch (e) {
+        console.error('FS operation failed');
+    }
     
 };
 
