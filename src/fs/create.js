@@ -1,27 +1,34 @@
-// import { error } from 'node:console';
-// import * as fs from 'node:fs/promises';
-// import { path } from 'node:path';
+import fs from 'node:fs/promises';
 
 import { appendFile } from 'node:fs/promises';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import path from 'node:path';
+import { error } from 'node:console';
+import { existsSync } from 'node:fs';
+
+const rootFile = fileURLToPath(import.meta.url);
+const rootDir = dirname(rootFile);
+const filePath = path.join(rootDir, 'files', 'fresh.txt')
+const fileText = "I am fresh and young";
+// console.log(filePath);
 
 
 const create = async () => {
 
   try {
-    await appendFile('src/fs/files/fresh.txt', "I am fresh and young");
-    console.log('successfully created /fs/files/fresh.txt');
-  } catch (error) {
-    console.error('there was an error:', "Fs ...");
-  }
-    // const fileText = "I am fresh and young";
-    // const filePath = path.join('..', 'files', 'fresh.txt');
-    // console.log = filePath;
+    const fileExists = existsSync(filePath);
+    // console.log('Exists: ', fileExists);
+    if (fileExists === false) {
+      appendFile(filePath, fileText);
+      console.log('File created')
+    }
+    else throw error;
 
-    // fs.appendFile(filePath, fileText, function (err) {
-    //   if (err) throw new Error("Fs ...");
-        
-    //   console.log("File is created");
-    // });
+} catch (e) {
+    console.error('FS operation failed');
+}
+
 };
 
 await create();
